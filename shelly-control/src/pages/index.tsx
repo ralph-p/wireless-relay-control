@@ -28,10 +28,13 @@ export default function Home() {
                 {data.devices.map((device) => (
                   <li className="text-2xl font-extrabold flex flex-col">
                     {device.name}
-                    <button onClick={() => mutate({ deviceId: device.id, turn: "on", channel: 1 })}>Channel 1 On</button>
-                    <button onClick={() => mutate({ deviceId: device.id, turn: "off", channel: 1 })}>Channel 1 Off</button>
-                    <button onClick={() => mutate({ deviceId: device.id, turn: "on", channel: 0 })}>Channel 2 On</button>
-                    <button onClick={() => mutate({ deviceId: device.id, turn: "off", channel: 0 })}>Channel 2 Off</button>
+                    <div className="grid grid-cols-2 gap-3">
+
+                      <button className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onClick={() => mutate({ deviceId: device.id, turn: "on", channel: 0 })}>Channel 1 On</button>
+                      <button className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onClick={() => mutate({ deviceId: device.id, turn: "off", channel: 0 })}>Channel 1 Off</button>
+                      <button className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onClick={() => mutate({ deviceId: device.id, turn: "on", channel: 1 })}>Channel 2 On</button>
+                      <button className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onClick={() => mutate({ deviceId: device.id, turn: "off", channel: 1 })}>Channel 2 Off</button>
+                    </div>
                   </li>
                 ))}
               </ul>) : null
