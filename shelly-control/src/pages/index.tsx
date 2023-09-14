@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 export default function Home() {
   const { data } = api.shelly.getAll.useQuery()
   const { mutate } = api.shelly.postToggleDevice.useMutation({ onSuccess: (data) => console.log(data) })
+  console.log(data);
 
 
   return (
@@ -29,7 +30,8 @@ export default function Home() {
                     {device.name}
                     <button onClick={() => mutate({ deviceId: device.id, turn: "on", channel: 1 })}>Channel 1 On</button>
                     <button onClick={() => mutate({ deviceId: device.id, turn: "off", channel: 1 })}>Channel 1 Off</button>
-
+                    <button onClick={() => mutate({ deviceId: device.id, turn: "on", channel: 0 })}>Channel 2 On</button>
+                    <button onClick={() => mutate({ deviceId: device.id, turn: "off", channel: 0 })}>Channel 2 Off</button>
                   </li>
                 ))}
               </ul>) : null
