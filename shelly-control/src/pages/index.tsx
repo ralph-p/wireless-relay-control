@@ -18,12 +18,20 @@ export default function Home() {
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+            Shelly <span className="text-[hsl(280,100%,70%)]">Relay</span> Control
           </h1>
 
           {
             data && data.devices.length ? (
-              <ul className="text-2xl font-extrabold tracking-tight text-white sm:text-[5rem]">{data.devices.map((device) => (<li onClick={() => mutate({ deviceId: device.id })}>{device.name}</li>))}
+              <ul className="tracking-tight text-white sm:text-[5rem]">
+                {data.devices.map((device) => (
+                  <li className="text-2xl font-extrabold flex flex-col">
+                    {device.name}
+                    <button onClick={() => mutate({ deviceId: device.id, turn: "on", channel: 1 })}>Channel 1 On</button>
+                    <button onClick={() => mutate({ deviceId: device.id, turn: "off", channel: 1 })}>Channel 1 Off</button>
+
+                  </li>
+                ))}
               </ul>) : null
           }
 

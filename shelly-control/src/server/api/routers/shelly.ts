@@ -22,23 +22,31 @@ export const shellyRouter = createTRPCRouter({
     return { devices: [{ name: "Relay 1", id: "ec62609151a0" }] }
   }),
   postToggleDevice: publicProcedure
-    .input(z.object({ deviceId: z.string() }))
+    .input(z.object({ deviceId: z.string(), turn: z.string(), channel: z.number() }))
     .mutation(async ({ input }) => {
       const authKey = process.env.NEXT_SHELLY_AUTH_KEY || null
       if (url && authKey) {
-        let postUrl = `${url}/device/status?auth_key=${authKey}&id=${input.deviceId}`
-        const { data } = await axios.post(postUrl)
-        if (data.isok) {
-          postUrl = `${url}/device/relay/control/`
-          const formData = new FormData()
-          formData.append('auth_key', authKey)
-          formData.append('id', input.deviceId)
-          formData.append('turn', 'off')
-          formData.append('channel', '1')
+        let apiUrl = `${url}/device/relay/control/`
+        const requestData = {
+          auth_key: authKey,
+          channel: input.channel,
+          turn: input.turn,
+          id: input.deviceId,
+        }
+        // Include the authentication key in the request headers
+        const headers = {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        };
+        try {
+          const response = await axios.post(apiUrl, requestData, { headers });
 
-          await axios.post(postUrl, queryString.stringify({ auth_key: authKey, id: input.deviceId, turn: "off", channel: 1 }), { headers: { 'Content-Type': 'multipart/form-data' } })
-
-
+          if (response.status === 200) {
+            return response.data;
+          } else {
+            throw new Error('Failed to control relay.');
+          }
+        } catch (error) {
+          throw new Error('Failed to control relay.');
         }
       }
 
